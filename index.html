@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>入場者・収益管理</title>
+<title>クラスの収入管理</title>
 
 <style>
 *{
@@ -274,7 +275,10 @@ button:active{
 
   <div class="grid">
 
-    <!-- 前提条件 -->
+    <!-- ================================
+         前提条件
+    ================================= -->
+
     <section class="card">
 
       <h2>前提条件</h2>
@@ -331,13 +335,16 @@ button:active{
 
       <div class="note">
         資金・消費・入場料金を設定すると、
-        入場者数と前売り券から総収入を自動計算します。
+        入場者数と前売り券から稼ぎ・利潤を自動計算します。
       </div>
 
     </section>
 
 
-    <!-- 現在の収益 -->
+    <!-- ================================
+         現在の収益
+    ================================= -->
+
     <section class="card">
 
       <h2>現在の収益</h2>
@@ -352,14 +359,14 @@ button:active{
         </div>
 
         <div class="result">
-          <div class="name">利益</div>
+          <div class="name">稼ぎ</div>
           <div class="value" id="earnings">
             0 円
           </div>
         </div>
 
         <div class="result">
-          <div class="name">総収入</div>
+          <div class="name">利潤</div>
           <div class="value" id="profit">
             0 円
           </div>
@@ -369,6 +376,7 @@ button:active{
 
       <div class="sub-result">
         <div class="label">前売り券売上</div>
+
         <div class="amount" id="advanceRevenue">
           0 円
         </div>
@@ -377,7 +385,10 @@ button:active{
     </section>
 
 
-    <!-- 入場者数・前売り券 -->
+    <!-- ================================
+         入場者数・前売り券
+    ================================= -->
+
     <section class="card full">
 
       <h2>入力対応</h2>
@@ -442,7 +453,10 @@ button:active{
     </section>
 
 
-    <!-- 履歴 -->
+    <!-- ================================
+         履歴
+    ================================= -->
+
     <section class="card full">
 
       <h2>入場者数の履歴</h2>
@@ -469,12 +483,19 @@ button:active{
 
       </table>
 
+
       <!-- クラス費 -->
+
       <div class="sub-result">
-        <div class="label">クラス費</div>
+
+        <div class="label">
+          クラス費
+        </div>
+
         <div class="amount" id="classFee">
           0 円
         </div>
+
       </div>
 
     </section>
@@ -491,8 +512,7 @@ button:active{
 ======================================== */
 
 /*
- * 前売り券の料金
- * この値を変更すれば前売り券の価格を変更できます。
+ * 前売り券1枚あたりの料金
  */
 const ADVANCE_TICKET_PRICE = 100;
 
@@ -517,6 +537,25 @@ const defaultState = {
 };
 
 
+/*
+ * state の役割
+ *
+ * funds:
+ *   現在使える資金
+ *
+ * cost:
+ *   資金から消費した金額
+ *
+ * price:
+ *   通常入場1人あたりの料金
+ *
+ * advanceTickets:
+ *   販売した前売り券の枚数
+ *
+ * entries:
+ *   その都度追加された入場者数
+ */
+
 const state = JSON.parse(
   localStorage.getItem('visitorRevenueState') ||
   JSON.stringify(defaultState)
@@ -536,10 +575,12 @@ const money = n =>
 ======================================== */
 
 function save(){
+
   localStorage.setItem(
     'visitorRevenueState',
     JSON.stringify(state)
   );
+
 }
 
 
@@ -548,28 +589,31 @@ function save(){
 ======================================== */
 
 /*
- * 前売り券の枚数 × 100円
+ * 前売り券売上
  *
- * 例：
- * 5枚 → 500円
- * 20枚 → 2,000円
+ * 前売り券枚数 × 前売り券料金
  */
+
 function getAdvanceTicketRevenue(){
 
-  return state.advanceTickets * ADVANCE_TICKET_PRICE;
+  return (
+    state.advanceTickets *
+    ADVANCE_TICKET_PRICE
+  );
 
 }
 
 
 /* ========================================
-   画面更新
+   画面更新・全計算
 ======================================== */
 
 function render(){
 
-  /*
-   * 前提条件を表示
-   */
+  /* ----------------------------------------
+     前提条件を画面へ反映
+  ---------------------------------------- */
+
   ['funds','cost','price'].forEach(id => {
 
     $(id).value = state[id] || '';
@@ -577,67 +621,85 @@ function render(){
   });
 
 
-  /*
-   * 前売り券枚数を表示
-   */
+  /* ----------------------------------------
+     前売り券枚数を画面へ反映
+  ---------------------------------------- */
+
   $('advanceTickets').value =
     state.advanceTickets || '';
 
 
-  /*
-   * 入場者数の累計
-   */
-  const total =
+  /* ----------------------------------------
+     入場者数の累計
+  ---------------------------------------- */
+
+  const totalVisitors =
     state.entries.reduce(
-      (a,b) => a + b,
+      (total, current) =>
+        total + current,
       0
     );
 
 
-  /*
-   * 通常入場による売上
-   */
+  /* ----------------------------------------
+     通常入場による売上
+  ---------------------------------------- */
+
   const normalRevenue =
-    state.price * total;
+    state.price *
+    totalVisitors;
 
 
-  /*
-   * 前売り券による売上
-   */
+  /* ----------------------------------------
+     前売り券による売上
+  ---------------------------------------- */
+
   const advanceRevenue =
     getAdvanceTicketRevenue();
 
 
-  /*
-   * 全体の稼ぎ
-   *
-   * 通常入場売上
-   * ＋
-   * 前売り券売上
-   */
+  /* ----------------------------------------
+     稼ぎ
+     
+     稼ぎ =
+     通常入場売上
+     +
+     前売り券売上
+  ---------------------------------------- */
+
   const earnings =
-    normalRevenue + advanceRevenue;
+    normalRevenue +
+    advanceRevenue;
 
 
-  /*
-   * 利潤
-   *
-   * 資金 − 消費 ＋ 稼ぎ
-   */
+  /* ----------------------------------------
+     利潤
+     
+     利潤 =
+     資金
+     -
+     消費
+     +
+     稼ぎ
+  ---------------------------------------- */
+
   const profit =
-    state.funds - state.cost + earnings;
+    state.funds -
+    state.cost +
+    earnings;
 
 
-  /*
-   * クラス費
-   *
-   * 利潤が40,000円以上
-   * → 利潤 − 20,000円
-   *
-   * 利潤が40,000円未満
-   * → 利潤 ÷ 2
-   * → 小数点以下切り捨て
-   */
+  /* ----------------------------------------
+     クラス費
+     
+     利潤が40,000円以上
+       → 利潤 - 20,000円
+     
+     利潤が40,000円未満
+       → 利潤 ÷ 2
+       → 小数点以下切り捨て
+  ---------------------------------------- */
+
   let classFee;
 
   if(profit >= 40000){
@@ -653,42 +715,54 @@ function render(){
   }
 
 
-  /*
-   * 結果表示
-   */
+  /* ----------------------------------------
+     計算結果を画面へ表示
+  ---------------------------------------- */
+
   $('totalVisitors').textContent =
-    total.toLocaleString('ja-JP') + ' 人';
+    totalVisitors.toLocaleString('ja-JP') +
+    ' 人';
+
 
   $('earnings').textContent =
     money(earnings);
 
+
   $('profit').textContent =
     money(profit);
 
+
   $('advanceRevenue').textContent =
     money(advanceRevenue);
+
 
   $('classFee').textContent =
     money(classFee);
 
 
-  /*
-   * 入場者履歴
-   */
-  let c = 0;
+  /* ----------------------------------------
+     入場者数履歴
+  ---------------------------------------- */
+
+  let cumulativeVisitors = 0;
+
 
   $('historyBody').innerHTML =
     state.entries.length
 
-    ? state.entries.map((n,i) => {
+    ? state.entries.map((count,index) => {
 
-        c += n;
+        cumulativeVisitors += count;
 
         return `
           <tr>
-            <td>${i + 1}</td>
-            <td>${n.toLocaleString('ja-JP')} 人</td>
-            <td>${c.toLocaleString('ja-JP')} 人</td>
+            <td>${index + 1}</td>
+            <td>
+              ${count.toLocaleString('ja-JP')} 人
+            </td>
+            <td>
+              ${cumulativeVisitors.toLocaleString('ja-JP')} 人
+            </td>
           </tr>
         `;
 
@@ -701,6 +775,7 @@ function render(){
         </td>
       </tr>
     `;
+
 }
 
 
@@ -719,6 +794,7 @@ function render(){
           0,
           Number($(id).value) || 0
         );
+
 
       save();
       render();
@@ -741,9 +817,12 @@ $('advanceTickets').addEventListener(
       Math.max(
         0,
         Math.floor(
-          Number($('advanceTickets').value) || 0
+          Number(
+            $('advanceTickets').value
+          ) || 0
         )
       );
+
 
     save();
     render();
@@ -760,15 +839,21 @@ $('addBtn').addEventListener(
   'click',
   () => {
 
-    const n =
+    const count =
       Math.floor(
-        Number($('visitors').value)
+        Number(
+          $('visitors').value
+        )
       );
 
 
+    /*
+     * 0以下・数字以外は追加しない
+     */
+
     if(
-      !Number.isFinite(n) ||
-      n <= 0
+      !Number.isFinite(count) ||
+      count <= 0
     ){
 
       $('visitors').focus();
@@ -777,12 +862,31 @@ $('addBtn').addEventListener(
     }
 
 
-    state.entries.push(n);
+    /*
+     * 入場者数を履歴へ追加
+     */
+
+    state.entries.push(count);
+
+
+    /*
+     * 入力欄を空にする
+     */
 
     $('visitors').value = '';
 
+
+    /*
+     * 保存して再計算
+     */
+
     save();
     render();
+
+
+    /*
+     * 次の入力へフォーカス
+     */
 
     $('visitors').focus();
 
@@ -796,9 +900,9 @@ $('addBtn').addEventListener(
 
 $('visitors').addEventListener(
   'keydown',
-  e => {
+  event => {
 
-    if(e.key === 'Enter'){
+    if(event.key === 'Enter'){
 
       $('addBtn').click();
 
