@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>入場者・収益管理</title>
-
+ 
 <style>
 *{
   box-sizing:border-box;
 }
-
+ 
 body{
   margin:0;
   font-family:
@@ -21,60 +21,60 @@ body{
   background:#f5f6f8;
   color:#222;
 }
-
+ 
 .container{
   width:min(1100px,calc(100% - 32px));
   margin:auto;
   padding:28px 0 48px;
 }
-
+ 
 h1{
   margin:0 0 24px;
   font-size:clamp(26px,4vw,38px);
 }
-
+ 
 h2{
   margin:0 0 16px;
   font-size:20px;
 }
-
+ 
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:18px;
 }
-
+ 
 .card{
   background:#fff;
   border-radius:16px;
   padding:20px;
   box-shadow:0 4px 18px rgba(0,0,0,.07);
 }
-
+ 
 .full{
   grid-column:1/-1;
 }
-
+ 
 .field{
   margin-bottom:16px;
 }
-
+ 
 label{
   display:block;
   font-weight:700;
   margin-bottom:8px;
 }
-
+ 
 .unit{
   display:flex;
   align-items:center;
   gap:8px;
 }
-
+ 
 .unit input{
   flex:1;
 }
-
+ 
 input{
   width:100%;
   min-height:52px;
@@ -84,43 +84,43 @@ input{
   font-size:20px;
   background:#fff;
 }
-
+ 
 input:focus{
   outline:none;
   border-color:#222;
   box-shadow:0 0 0 3px rgba(0,0,0,.08);
 }
-
+ 
 .unit span{
   font-size:18px;
   font-weight:600;
   white-space:nowrap;
 }
-
+ 
 .results{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:12px;
 }
-
+ 
 .result{
   padding:18px;
   border-radius:12px;
   background:#f0f2f5;
 }
-
+ 
 .name{
   font-size:15px;
   color:#555;
   font-weight:700;
 }
-
+ 
 .value{
   margin-top:6px;
   font-size:clamp(24px,4vw,34px);
   font-weight:800;
 }
-
+ 
 .sub-result{
   margin-top:12px;
   padding:14px;
@@ -132,18 +132,18 @@ input:focus{
   align-items:center;
   gap:12px;
 }
-
+ 
 .sub-result .label{
   margin:0;
   color:#555;
   font-weight:700;
 }
-
+ 
 .sub-result .amount{
   font-weight:800;
   font-size:18px;
 }
-
+ 
 button{
   width:100%;
   min-height:52px;
@@ -154,60 +154,60 @@ button{
   cursor:pointer;
   transition:.15s;
 }
-
+ 
 button:active{
   transform:scale(.98);
 }
-
+ 
 .add{
   background:#222;
   color:#fff;
 }
-
+ 
 .add:hover{
   background:#000;
 }
-
+ 
 .reset{
   margin-top:10px;
   background:#e8eaed;
   color:#222;
 }
-
+ 
 .reset:hover{
   background:#dcdfe3;
 }
-
+ 
 .history{
   width:100%;
   border-collapse:collapse;
 }
-
+ 
 .history th,
 .history td{
   padding:10px;
   border-bottom:1px solid #e2e4e7;
   text-align:right;
 }
-
+ 
 .history th:first-child,
 .history td:first-child{
   text-align:center;
 }
-
+ 
 .empty{
   color:#777;
   text-align:center!important;
   padding:20px!important;
 }
-
+ 
 .note{
   color:#666;
   font-size:14px;
   margin-top:8px;
   line-height:1.6;
 }
-
+ 
 .ticket-info{
   margin-top:12px;
   padding:12px 14px;
@@ -216,48 +216,48 @@ button:active{
   font-size:14px;
   color:#555;
 }
-
+ 
 .ticket-info strong{
   color:#222;
 }
-
+ 
 @media(max-width:700px){
-
+ 
   .container{
     width:min(100% - 20px,600px);
     padding-top:18px;
     padding-bottom:32px;
   }
-
+ 
   .grid{
     grid-template-columns:1fr;
   }
-
+ 
   .full{
     grid-column:auto;
   }
-
+ 
   .results{
     grid-template-columns:1fr;
   }
-
+ 
   .card{
     padding:16px;
     border-radius:14px;
   }
-
+ 
   h1{
     margin-bottom:18px;
   }
-
+ 
   .value{
     font-size:30px;
   }
-
+ 
   .history{
     font-size:14px;
   }
-
+ 
   .history th,
   .history td{
     padding:9px 6px;
@@ -265,23 +265,23 @@ button:active{
 }
 </style>
 </head>
-
+ 
 <body>
-
+ 
 <div class="container">
-
+ 
   <h1>クラスの収入管理</h1>
-
+ 
   <div class="grid">
-
+ 
     <!-- 前提条件 -->
     <section class="card">
-
+ 
       <h2>前提条件</h2>
-
+ 
       <div class="field">
         <label for="funds">資金</label>
-
+ 
         <div class="unit">
           <input
             id="funds"
@@ -293,10 +293,10 @@ button:active{
           <span>円</span>
         </div>
       </div>
-
+ 
       <div class="field">
         <label for="cost">消費</label>
-
+ 
         <div class="unit">
           <input
             id="cost"
@@ -308,10 +308,10 @@ button:active{
           <span>円</span>
         </div>
       </div>
-
+ 
       <div class="field">
         <label for="price">入場料金</label>
-
+ 
         <div class="unit">
           <input
             id="price"
@@ -323,73 +323,73 @@ button:active{
           <span>円 / 人</span>
         </div>
       </div>
-
+ 
       <div class="ticket-info">
         前売り券の料金：
         <strong>100円 / 枚</strong>
       </div>
-
+ 
       <div class="note">
         資金・消費・入場料金を設定すると、
         入場者数と前売り券から総収入を自動計算します。
       </div>
-
+ 
     </section>
-
-
+ 
+ 
     <!-- 現在の収益 -->
     <section class="card">
-
+ 
       <h2>現在の収益</h2>
-
+ 
       <div class="results">
-
+ 
         <div class="result">
           <div class="name">入場者数</div>
           <div class="value" id="totalVisitors">
             0 人
           </div>
         </div>
-
+ 
         <div class="result">
           <div class="name">利益</div>
           <div class="value" id="earnings">
             0 円
           </div>
         </div>
-
+ 
         <div class="result">
           <div class="name">総収入</div>
           <div class="value" id="profit">
             0 円
           </div>
         </div>
-
+ 
       </div>
-
+ 
       <div class="sub-result">
         <div class="label">前売り券売上</div>
         <div class="amount" id="advanceRevenue">
           0 円
         </div>
       </div>
-
+ 
     </section>
-
-
+ 
+ 
     <!-- 入場者数・前売り券 -->
     <section class="card full">
-
+ 
       <h2>入力対応</h2>
-
+ 
       <div class="field">
-
+ 
         <label for="visitors">
           今回の入場者数
         </label>
-
+ 
         <div class="unit">
-
+ 
           <input
             id="visitors"
             type="number"
@@ -397,26 +397,26 @@ button:active{
             step="1"
             placeholder="例：5"
           >
-
+ 
           <span>人</span>
-
+ 
         </div>
-
+ 
       </div>
-
+ 
       <button class="add" id="addBtn">
         入場者数を追加
       </button>
-
-
+ 
+ 
       <div class="field" style="margin-top:20px;">
-
+ 
         <label for="advanceTickets">
           前売り券
         </label>
-
+ 
         <div class="unit">
-
+ 
           <input
             id="advanceTickets"
             type="number"
@@ -424,31 +424,31 @@ button:active{
             step="1"
             placeholder="例：10"
           >
-
+ 
           <span>枚</span>
-
+ 
         </div>
-
+ 
       </div>
-
+ 
       <div class="note">
         前売り券1枚につき100円として計算します。
       </div>
-
+ 
       <button class="reset" id="resetBtn">
         すべてリセット
       </button>
-
+ 
     </section>
-
-
+ 
+ 
     <!-- 履歴 -->
     <section class="card full">
-
+ 
       <h2>入場者数の履歴</h2>
-
+ 
       <table class="history">
-
+ 
         <thead>
           <tr>
             <th>回</th>
@@ -456,50 +456,76 @@ button:active{
             <th>累計</th>
           </tr>
         </thead>
-
+ 
         <tbody id="historyBody">
-
+ 
           <tr>
             <td colspan="3" class="empty">
               まだ入力されていません
             </td>
           </tr>
-
+ 
         </tbody>
-
+ 
       </table>
-
+ 
     </section>
-
+ 
+ 
+    <!-- クラス費 -->
+    <section class="card full">
+ 
+      <h2>クラス費</h2>
+ 
+      <div class="sub-result">
+ 
+        <div class="label">
+          クラス費
+        </div>
+ 
+        <div class="amount" id="classFee">
+          0 円
+        </div>
+ 
+      </div>
+ 
+      <div class="note">
+        利潤が40,000円以上の場合は「利潤 − 20,000円」、
+        40,000円未満の場合は「利潤 ÷ 2」で計算します。
+        なお、割り算で小数が出た場合は切り捨てます。
+      </div>
+ 
+    </section>
+ 
   </div>
-
+ 
 </div>
-
-
+ 
+ 
 <script>
-
+ 
 /* ========================================
    基本設定
 ======================================== */
-
+ 
 /*
- * 前売り券の料金
- * この値を変更すれば前売り券の価格を変更できます。
- */
+* 前売り券の料金
+* この値を変更すれば前売り券の価格を変更できます。
+*/
 const ADVANCE_TICKET_PRICE = 100;
-
-
+ 
+ 
 /* ========================================
    HTML要素取得
 ======================================== */
-
+ 
 const $ = id => document.getElementById(id);
-
-
+ 
+ 
 /* ========================================
    保存データ
 ======================================== */
-
+ 
 const defaultState = {
   funds: 0,
   cost: 0,
@@ -507,75 +533,104 @@ const defaultState = {
   advanceTickets: 0,
   entries: []
 };
-
-
+ 
+ 
 const state = JSON.parse(
   localStorage.getItem('visitorRevenueState') ||
   JSON.stringify(defaultState)
 );
-
-
+ 
+ 
 /* ========================================
    金額表示
 ======================================== */
-
+ 
 const money = n =>
   Math.round(n).toLocaleString('ja-JP') + ' 円';
-
-
+ 
+ 
 /* ========================================
    データ保存
 ======================================== */
-
+ 
 function save(){
+ 
   localStorage.setItem(
     'visitorRevenueState',
     JSON.stringify(state)
   );
+ 
 }
-
-
+ 
+ 
 /* ========================================
    前売り券売上計算
 ======================================== */
-
+ 
 /*
- * 前売り券の枚数 × 100円
- *
- * 例：
- * 5枚 → 500円
- * 20枚 → 2,000円
- */
+* 前売り券の枚数 × 100円
+*
+* 例：
+* 5枚 → 500円
+* 20枚 → 2,000円
+*/
 function getAdvanceTicketRevenue(){
-
-  return state.advanceTickets * ADVANCE_TICKET_PRICE;
-
+ 
+  return state.advanceTickets *
+         ADVANCE_TICKET_PRICE;
+ 
 }
-
-
+ 
+ 
+/* ========================================
+   クラス費計算
+======================================== */
+ 
+/*
+* 利潤が40,000円以上
+* → 利潤 - 20,000円
+*
+* 利潤が40,000円未満
+* → 利潤 ÷ 2
+* → 小数点以下切り捨て
+*/
+function getClassFee(profit){
+ 
+  if(profit >= 40000){
+ 
+    return profit - 20000;
+ 
+  }
+ 
+  return Math.floor(profit / 2);
+ 
+}
+ 
+ 
 /* ========================================
    画面更新
 ======================================== */
-
+ 
 function render(){
-
+ 
   /*
    * 前提条件を表示
    */
   ['funds','cost','price'].forEach(id => {
-
-    $(id).value = state[id] || '';
-
+ 
+    $(id).value =
+      state[id] || '';
+ 
   });
-
-
+ 
+ 
   /*
    * 前売り券枚数を表示
    */
   $('advanceTickets').value =
     state.advanceTickets || '';
-
-
+ 
+ 
   /*
    * 入場者数の累計
    */
@@ -584,68 +639,91 @@ function render(){
       (a,b) => a + b,
       0
     );
-
-
+ 
+ 
   /*
    * 通常入場による売上
    */
   const normalRevenue =
     state.price * total;
-
-
+ 
+ 
   /*
    * 前売り券による売上
    */
   const advanceRevenue =
     getAdvanceTicketRevenue();
-
-
+ 
+ 
   /*
-   * 全体の稼ぎ
+   * 稼ぎ
    *
    * 通常入場売上
    * ＋
    * 前売り券売上
    */
   const earnings =
-    normalRevenue + advanceRevenue;
-
-
+    normalRevenue +
+    advanceRevenue;
+ 
+ 
   /*
    * 利潤
+   *
+   * 資金
+   * − 消費
+   * ＋ 稼ぎ
    */
   const profit =
-    earnings - state.cost;
-
-
+    state.funds -
+    state.cost +
+    earnings;
+ 
+ 
+  /*
+   * クラス費
+   */
+  const classFee =
+    getClassFee(profit);
+ 
+ 
   /*
    * 結果表示
    */
   $('totalVisitors').textContent =
-    total.toLocaleString('ja-JP') + ' 人';
-
+    total.toLocaleString('ja-JP') +
+    ' 人';
+ 
+ 
   $('earnings').textContent =
     money(earnings);
-
+ 
+ 
   $('profit').textContent =
     money(profit);
-
+ 
+ 
   $('advanceRevenue').textContent =
     money(advanceRevenue);
-
-
+ 
+ 
+  $('classFee').textContent =
+    money(classFee);
+ 
+ 
   /*
    * 入場者履歴
    */
   let c = 0;
-
+ 
+ 
   $('historyBody').innerHTML =
     state.entries.length
-
+ 
     ? state.entries.map((n,i) => {
-
+ 
         c += n;
-
+ 
         return `
           <tr>
             <td>${i + 1}</td>
@@ -653,9 +731,9 @@ function render(){
             <td>${c.toLocaleString('ja-JP')} 人</td>
           </tr>
         `;
-
+ 
       }).join('')
-
+ 
     : `
       <tr>
         <td colspan="3" class="empty">
@@ -663,153 +741,58 @@ function render(){
         </td>
       </tr>
     `;
+ 
 }
-
-
+ 
+ 
 /* ========================================
    前提条件の入力
 ======================================== */
-
+ 
 ['funds','cost','price'].forEach(id => {
-
+ 
   $(id).addEventListener(
     'input',
     () => {
-
+ 
       state[id] =
         Math.max(
           0,
           Number($(id).value) || 0
         );
-
+ 
       save();
       render();
-
+ 
     }
   );
-
+ 
 });
-
-
+ 
+ 
 /* ========================================
    前売り券枚数の入力
 ======================================== */
-
+ 
 $('advanceTickets').addEventListener(
   'input',
   () => {
-
+ 
     state.advanceTickets =
       Math.max(
         0,
         Math.floor(
-          Number($('advanceTickets').value) || 0
+          Number(
+            $('advanceTickets').value
+          ) || 0
         )
       );
-
+ 
     save();
     render();
-
+ 
   }
 );
-
-
+ 
+ 
 /* ========================================
-   入場者数追加
-======================================== */
-
-$('addBtn').addEventListener(
-  'click',
-  () => {
-
-    const n =
-      Math.floor(
-        Number($('visitors').value)
-      );
-
-
-    if(
-      !Number.isFinite(n) ||
-      n <= 0
-    ){
-
-      $('visitors').focus();
-      return;
-
-    }
-
-
-    state.entries.push(n);
-
-    $('visitors').value = '';
-
-    save();
-    render();
-
-    $('visitors').focus();
-
-  }
-);
-
-
-/* ========================================
-   Enterキーで入場者数追加
-======================================== */
-
-$('visitors').addEventListener(
-  'keydown',
-  e => {
-
-    if(e.key === 'Enter'){
-
-      $('addBtn').click();
-
-    }
-
-  }
-);
-
-
-/* ========================================
-   リセット
-======================================== */
-
-$('resetBtn').addEventListener(
-  'click',
-  () => {
-
-    if(
-      !confirm(
-        '入力したデータをすべて削除しますか？'
-      )
-    ){
-
-      return;
-
-    }
-
-
-    state.funds = 0;
-    state.cost = 0;
-    state.price = 0;
-    state.advanceTickets = 0;
-    state.entries = [];
-
-
-    save();
-    render();
-
-  }
-);
-
-
-/* ========================================
-   初期表示
-======================================== */
-
-render();
-
-</script>
-
-</body>
-</html>
